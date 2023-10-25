@@ -1,0 +1,37 @@
+﻿@page "/websocket"
+
+<h3>WebSocket Client</h3>
+<div>
+    <button @onclick="Connect">Connect</button>
+    <button @onclick="Send">Send Message</button>
+</div>
+<div>
+    <strong>Status:</strong> @status
+</div>
+<div>
+    <strong>Received Message:</strong> @receivedMessage
+</div>
+
+@code {
+    private string status = "Disconnected";
+    private string receivedMessage = "";
+    public void Connect()
+    {
+        var uri = new Uri("wss://localhost:51000");
+        Sockets.Instance.ConnectAsync(uri, CancellationToken.None);
+        status = "Connected";
+    }
+
+    public void Send()
+    {
+        Sockets.Instance.SendMessageAsync("Hello from Blazor WebSocket client!", CancellationToken.None);
+      
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+    }
+}

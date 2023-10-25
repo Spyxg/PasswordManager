@@ -1,0 +1,41 @@
+﻿@page "/Register"
+@inject NavigationManager NavigationManager
+
+<h1>Register:</h1>
+<p>Username:</p>
+<input type="text" @bind="UsernameInput" />
+<p>Password:</p>
+<input type="text" @bind="PasswordInput" />
+
+<div>
+    <button @onclick="RegisterAccount">Register</button>
+</div>
+
+@code {
+    class RegisterJson
+	{
+		public RegisterJson(string username, string password)
+		{
+			Username = username;
+			Password = password;
+
+		}
+		public string Type = "Register";
+		public string Username = "";
+		public string Password = "";
+    }
+    private string UsernameInput = "";
+    private string PasswordInput = "";
+    private void RegisterAccount()
+    {
+        RegisterJson register = new RegisterJson(UsernameInput, PasswordInput);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(register);
+        Sockets.Instance.SendMessageAsync(json, CancellationToken.None);
+        string message = Sockets.Instance.ReceiveMessageAsync(CancellationToken.None).Result;
+        if (message == "RegisterSuccess")
+        {
+            NavigationManager.NavigateTo("/Login");
+        }
+    }
+   
+}

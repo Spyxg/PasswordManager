@@ -1,0 +1,25 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+
+<div>
+    <button @onclick="GoToLogin">Go To Login</button>
+</div>
+
+<div>
+    <button @onclick="GoToRegister">Go To Register</button>
+</div>
+<p>@message</p>
+
+@code {
+    private string inputText = "";
+    private string message = "";
+    private void GoToLogin()
+	{
+		NavigationManager.NavigateTo("/login");
+	}
+    private void GoToRegister()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+   
+}
